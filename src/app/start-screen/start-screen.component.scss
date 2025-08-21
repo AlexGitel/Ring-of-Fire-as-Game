@@ -1,0 +1,38 @@
+.start-screen {
+    background-color: #404040;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../assets/img/start-img.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    h1 {
+        position: absolute;
+        color: #FF0000;
+        font-size: 64px;
+        cursor: pointer;
+        font-weight: 600;
+
+        &:hover {
+            color: black;
+            font-size: 72px;
+        }
+
+        @media (max-width: 600px) {
+            font-size: 42px;
+        }
+
+        @media (min-width: 1920px) {
+            font-size: 80px;
+
+            &:hover {
+                font-size: 88px;
+            }
+        }
+    }
+}

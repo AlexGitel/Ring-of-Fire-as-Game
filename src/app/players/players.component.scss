@@ -1,0 +1,26 @@
+.playersBar {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    background-color: rgba(172, 144, 99, 0.544);
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+
+    span {
+        font-size: 28px;
+        margin-left: 16px;
+    }
+
+    img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: solid 4px #ff5e2b;
+        object-fit: cover;
+        background-color: lightseagreen;
+    }
+}
+
+.ifPlayerActive {
+    background-color: rgb(255, 162, 0);
+}

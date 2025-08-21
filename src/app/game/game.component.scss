@@ -1,0 +1,94 @@
+.play-field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    background-image: url('/assets/img/board.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.card-stack {
+    position: relative;
+
+    img {
+        position: absolute;
+        top: -45px;
+        width: 170px;
+    }
+}
+
+.focus-top-card {
+    cursor: pointer;
+    transition: all 125ms ease-in-out;
+
+    &:hover {
+        transform: scale(1.1) translateY(-9px);
+    }
+}
+
+.pick-card-animation {
+    transform: scale(1.3) translateX(170px) translateY(-180px) rotate(-15deg);
+    animation: card-flying 1.1s ease-in-out;
+}
+
+@keyframes card-flying {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.7);
+    }
+
+    100% {
+        transform: scale(1.3) translateX(170px) translateY(-180px) rotate(-15deg);
+    }
+}
+
+.played-card {
+    right: 25px;
+    transform: scale(1.3) translateX(170px) translateY(-180px) rotate(-15deg);
+}
+
+.btn-add {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+
+    @media (max-width: 960px) {
+        bottom: 24px;
+        right: 24px;
+        bottom: 170px;
+    }
+}
+
+.task-card-bottom {
+    position: absolute;
+    bottom: 32px;
+    right: 100px;
+    left: 100px;
+    height: 60px;
+    border-radius: 16px;
+    background-color: whitesmoke;
+}
+
+.players-wrapper {
+    top: 8px;
+    right: 0;
+    max-height: 75%;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-x: scroll;
+}
+
+.playersPosition {
+    position: relative;
+    z-index: 1;
+}
