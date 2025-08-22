@@ -19,3 +19,15 @@ body {
     margin: auto;
     position: relative;
 }
+
+@media (max-width: 1140px) {
+    .hide-players-mobile {
+        display: none;
+    }
+}
+
+@media (min-width: 1140px) {
+    .hide-players-desktop {
+        display: none;
+    }
+}

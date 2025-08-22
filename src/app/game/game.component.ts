@@ -6,10 +6,11 @@ import { PlayersComponent } from "../players/players.component";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { Firestore, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { TasksForPlayersComponent } from '../tasks-for-players/tasks-for-players.component';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-game',
@@ -29,7 +30,8 @@ export class GameComponent implements OnInit, OnDestroy{
 
   constructor (
     public dialog: MatDialog,
-    private receivedRoute: ActivatedRoute) {
+    private receivedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -59,22 +61,25 @@ export class GameComponent implements OnInit, OnDestroy{
     this.unsubscribe();
   }
 
-  // function to chouse (pick) a new card (with moving to side)
-pickCard() { 
-  if (!this.game.pickCardAnimation) 
-    { this.game.currentCard = this.game.stack.pop() ?? ''; 
-      this.game.pickCardAnimation = true; 
-      this.game.currentPlayer++; 
-      this.game.currentPlayer = this.game.currentPlayer % this.game.players.length; 
-      this.updateGameAndSave(); 
-      
-      setTimeout(() => { 
-      this.ifCardPicked(); 
-      this.game.pickCardAnimation = false; 
-      this.updateGameAndSave(); 
-    }, 1100); 
-  }  
-}
+  // function to chouse (pick) a new card (with flying to side)
+  pickCard() { 
+  if (!this.game.pickCardAnimation) { 
+      if (this.game.stack.length === 0) {
+        this.reshuffleCards();
+      }
+        this.game.currentCard = this.game.stack.pop() ?? ''; 
+        this.game.pickCardAnimation = true; 
+        this.game.currentPlayer++; 
+        this.game.currentPlayer = this.game.currentPlayer % this.game.players.length; 
+        this.updateGameAndSave(); 
+        
+        setTimeout(() => { 
+        this.ifCardPicked(); 
+        this.game.pickCardAnimation = false; 
+        this.updateGameAndSave(); 
+      }, 1100); 
+    }  
+  }
 
   // if card is picked, it will be shown
   ifCardPicked() {
@@ -85,6 +90,12 @@ pickCard() {
 
   // opens Dialog to add new player
   openDialog() {
+      if (this.game.players.length >= 7) {
+      this.snackBar.open('Maximale Spieleranzahl (7) erreicht!', 'OK', {
+        duration: 3000
+      });
+      return;
+    }
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
     dialogRef.afterClosed().subscribe((playerName: string) => {
       if (playerName) {
@@ -98,5 +109,13 @@ pickCard() {
   async updateGameAndSave() {
     const docRef = doc(this.firestore, 'games', this.gameId);
     await updateDoc(docRef, this.game.gameObjectsToJson());
+  }
+
+  // all cards will be reshuffled again
+  reshuffleCards() {
+    if (this.game.playedCards.length > 0) {
+      this.game.stack = this.game.shuffleCards([...this.game.playedCards]);
+      this.game.playedCards = [];
+    }
   }
 }

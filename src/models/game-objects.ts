@@ -14,7 +14,7 @@ constructor() {
         this.stack.push('diamonds_' + i);
         this.stack.push('clubs_' + i);
     }
-    shuffleCards(this.stack);
+    this.shuffleCards(this.stack);
 }
 
 // Convert GameObject to plain JSON, to add to Database as JSON
@@ -30,7 +30,7 @@ public gameObjectsToJson(){
 }
 
 // Convert plain JSON from database to GameObject, to use it in my game
- static fromJsonToGameObjects(data: any): GameObjects {
+static fromJsonToGameObjects(data: any): GameObjects {
     const game = new GameObjects();
         game.players = data.players ?? [];
         game.stack = data.stack ?? [];
@@ -40,18 +40,17 @@ public gameObjectsToJson(){
         game.pickCardAnimation = data.pickCardAnimation ?? [];
     return game;
   }
-}
 
 // all cards will be shuffled
-function shuffleCards(array: string[]) {
+public shuffleCards<T>(array: T[]): T[] {
     let currentIndex = array.length;
-
-    while (currentIndex != 0) {
-
-        let randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+    while (currentIndex !== 0) {
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]
+      ];
     }
+    return array;
+  }
 }
