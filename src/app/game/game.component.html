@@ -1,8 +1,15 @@
-<!--  Sidebar for added players, screen side right(desktop), top side (if mobile)  -->
-<div class="players-wrapper">
-    <app-players *ngFor="let eachPlayer of game.players; let i = index" [name]="eachPlayer"
+<!--  Sidebar for added players, screen side right(desktop) -->
+<div class="players-wrapper-desktop">
+    <app-players *ngFor="let eachPlayer of game.players; let i = index" #desktopPlayer [name]="eachPlayer"
         class="playersPosition hide-players-mobile" [ifPlayerActive]="i == game.currentPlayer">
     </app-players>
+</div>
+
+<!--  Sidebar for added players, top side (mobile)  -->
+<div class="players-wrapper-mobile">
+    <app-players-mobile *ngFor="let eachPlayer of game.players; let i = index" #mobilePlayer [name]="eachPlayer"
+        class="playersPositionMobile hide-players-desktop" [ifPlayerActive]="i == game.currentPlayer">
+    </app-players-mobile>
 </div>
 
 

@@ -1,19 +1,20 @@
 .playersBar {
     display: flex;
     align-items: center;
-    width: 300px;
+    flex-direction: column;
+    min-width: 65px;
     background-color: rgba(172, 144, 99, 0.544);
-    border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px;
     border-bottom-left-radius: 50px;
 
     span {
-        font-size: 28px;
-        margin-left: 10px;
+        font-size: 16px;
+        margin: 12px 0 12px 0;
     }
 
     img {
-        width: 77px;
-        height: 77px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         border: solid 4px #ff5e2b;
         object-fit: cover;

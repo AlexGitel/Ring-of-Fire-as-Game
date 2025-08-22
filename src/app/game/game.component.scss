@@ -80,7 +80,7 @@
     background-color: whitesmoke;
 }
 
-.players-wrapper {
+.players-wrapper-desktop {
     top: 8px;
     right: 0;
     max-height: 75%;
@@ -89,10 +89,24 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    overflow-x: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-.playersPosition {
+.playersPosition,
+.playersPositionMobile {
     position: relative;
     z-index: 1;
+}
+
+.players-wrapper-mobile {
+    top: 0;
+    left: 16px;
+    right: 16px;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
 }

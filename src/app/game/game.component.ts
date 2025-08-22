@@ -1,6 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ElementRef, ViewChildren, QueryList  } from '@angular/core';
 import { GameObjects } from '../../models/game-objects';
 import { PlayersComponent } from "../players/players.component";
 import { MatButtonModule } from '@angular/material/button';
@@ -11,22 +11,27 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { TasksForPlayersComponent } from '../tasks-for-players/tasks-for-players.component';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PlayersMobileComponent } from '../players-mobile/players-mobile.component';
 
 @Component({
   selector: 'app-game',
   standalone: true,
   imports: [CommonModule, PlayersComponent, MatButtonModule, 
-    MatIconModule, TasksForPlayersComponent],
+    MatIconModule, TasksForPlayersComponent, PlayersMobileComponent],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
-export class GameComponent implements OnInit, OnDestroy{
+export class GameComponent implements OnInit, OnDestroy {
   game: GameObjects = new GameObjects();
   gameId!: string; // will be needed in updateGameAndSave().
 
   unsubscribe!: () => void;
 
   firestore: Firestore = inject(Firestore);
+
+  // Player-Elements collect (per Template-Ref #mobilePlayer / #desktopPlayer )
+  @ViewChildren('mobilePlayer', { read: ElementRef }) playersMobile!: QueryList<ElementRef>;
+  @ViewChildren('desktopPlayer', { read: ElementRef }) playersDesktop!: QueryList<ElementRef>;
 
   constructor (
     public dialog: MatDialog,
@@ -62,23 +67,26 @@ export class GameComponent implements OnInit, OnDestroy{
   }
 
   // function to chouse (pick) a new card (with flying to side)
-  pickCard() { 
-  if (!this.game.pickCardAnimation) { 
-      if (this.game.stack.length === 0) {
-        this.reshuffleCards();
-      }
-        this.game.currentCard = this.game.stack.pop() ?? ''; 
-        this.game.pickCardAnimation = true; 
-        this.game.currentPlayer++; 
-        this.game.currentPlayer = this.game.currentPlayer % this.game.players.length; 
-        this.updateGameAndSave(); 
-        
-        setTimeout(() => { 
-        this.ifCardPicked(); 
-        this.game.pickCardAnimation = false; 
-        this.updateGameAndSave(); 
-      }, 1100); 
-    }  
+  pickCard() {
+    if (!this.game.pickCardAnimation) {
+      if (this.game.stack.length === 0) this.reshuffleCards(); // if stack empty - mix cards again
+
+      this.game.currentCard = this.game.stack.pop() ?? '';  // pick next card 
+
+      this.game.pickCardAnimation = true; // start Animation
+
+      this.game.currentPlayer++;
+      this.game.currentPlayer %= this.game.players.length;
+
+      this.scrollToActivePlayerMobile();
+      this.scrollToActivePlayerDesktop();
+
+      setTimeout(() => {  // after Animation
+        this.ifCardPicked();
+        this.game.pickCardAnimation = false; // stop Animation
+        this.updateGameAndSave();        // Save status
+      }, 1100);
+    }
   }
 
   // if card is picked, it will be shown
@@ -90,8 +98,8 @@ export class GameComponent implements OnInit, OnDestroy{
 
   // opens Dialog to add new player
   openDialog() {
-      if (this.game.players.length >= 7) {
-      this.snackBar.open('Maximale Spieleranzahl (7) erreicht!', 'OK', {
+      if (this.game.players.length >= 20) {
+      this.snackBar.open('Maximale Spieleranzahl (20) erreicht!', 'OK', {
         duration: 3000
       });
       return;
@@ -116,6 +124,30 @@ export class GameComponent implements OnInit, OnDestroy{
     if (this.game.playedCards.length > 0) {
       this.game.stack = this.game.shuffleCards([...this.game.playedCards]);
       this.game.playedCards = [];
+    }
+  }
+
+  // scroll to active player -for mobile players bar
+  private scrollToActivePlayerMobile() {
+    const active = this.playersMobile.get(this.game.currentPlayer)?.nativeElement;
+    if (active) {
+      active.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'nearest', 
+        block: 'nearest'
+      });
+    }
+  }
+
+  // scroll to active player - for desktop players bar
+  private scrollToActivePlayerDesktop() {
+    const active = this.playersDesktop.get(this.game.currentPlayer)?.nativeElement;
+    if (active) {
+      active.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      });
     }
   }
 }
