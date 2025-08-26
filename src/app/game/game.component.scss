@@ -110,3 +110,12 @@
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+app-players-mobile,
+app-players {
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+}

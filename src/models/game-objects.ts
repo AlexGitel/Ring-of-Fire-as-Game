@@ -1,5 +1,6 @@
 export class GameObjects {
     public players: string[] = [];
+    public player_profile: string[] = [];
     public stack: string[] = [];
     public playedCards: string[] = [];
     public currentPlayer: number = 0;
@@ -21,6 +22,7 @@ constructor() {
 public gameObjectsToJson(){
     return {
         players: this.players,
+        player_profile: this.player_profile,
         stack: this.stack,
         playedCards: this.playedCards,
         currentPlayer: this.currentPlayer,
@@ -33,6 +35,7 @@ public gameObjectsToJson(){
 static fromJsonToGameObjects(data: any): GameObjects {
     const game = new GameObjects();
         game.players = data.players ?? [];
+        game.player_profile = data.player_profile ?? [];
         game.stack = data.stack ?? [];
         game.playedCards = data.playedCards ?? [];
         game.currentPlayer = data.currentPlayer ?? 0;

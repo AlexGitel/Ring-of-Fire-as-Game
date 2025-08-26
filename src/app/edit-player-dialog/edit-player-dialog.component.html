@@ -1,0 +1,9 @@
+<div class="profile-pictures-container">
+    @for (profile of allProfilePictures; track profile) {
+    <img class="profile-pictures" [mat-dialog-close]="profile" src="assets/img/profiles/{{ profile }}"
+        alt="avatar_pictures_of_players">
+    }
+
+    <!-- another possibility -->
+    <!-- <img *ngFor="let picture of allProfilePictures" src="assets/img/profiles/{{picture}}" alt="avatar_pictures_of_players"> -->
+</div>

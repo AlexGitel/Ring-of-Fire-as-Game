@@ -12,6 +12,7 @@ import { TasksForPlayersComponent } from '../tasks-for-players/tasks-for-players
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PlayersMobileComponent } from '../players-mobile/players-mobile.component';
+import { EditPlayerDialogComponent } from '../edit-player-dialog/edit-player-dialog.component';
 
 @Component({
   selector: 'app-game',
@@ -57,6 +58,8 @@ export class GameComponent implements OnInit, OnDestroy {
   
     this.unsubscribe = onSnapshot(gameRef, (list) => {
     const data = list.data();
+    console.log(data);
+    
       this.game = GameObjects.fromJsonToGameObjects(data);
     });
   }
@@ -98,8 +101,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
   // opens Dialog to add new player
   openDialog() {
-      if (this.game.players.length >= 20) {
-      this.snackBar.open('Maximale Spieleranzahl (20) erreicht!', 'OK', {
+      if (this.game.players.length >= 10) {
+      this.snackBar.open('Maximale Spieleranzahl (10) erreicht!', 'OK', {
         duration: 3000
       });
       return;
@@ -108,6 +111,7 @@ export class GameComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((playerName: string) => {
       if (playerName) {
         this.game.players.push(playerName);
+        // this.game.player_profile.push('empty_img.png');
         this.updateGameAndSave();
       }
     });
@@ -150,4 +154,15 @@ export class GameComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  // to choose profile image and change the standard image of player 
+  editProfile(playerId: number){
+    const dialogRef = this.dialog.open(EditPlayerDialogComponent);
+     dialogRef.afterClosed().subscribe((change: string) => {
+      console.log('Recived change', change);
+       this.game.player_profile[playerId] = change;
+        this.updateGameAndSave();
+    });
+  }
+
 }
