@@ -18,6 +18,11 @@
         border: solid 4px #ff5e2b;
         object-fit: cover;
         background-color: lightseagreen;
+
+        &:hover {
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
     }
 }
 

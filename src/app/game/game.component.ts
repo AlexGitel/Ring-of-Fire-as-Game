@@ -111,7 +111,24 @@ export class GameComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((playerName: string) => {
       if (playerName) {
         this.game.players.push(playerName);
-        // this.game.player_profile.push('empty_img.png');
+        this.game.player_profile.push('empty_img.png');
+        this.updateGameAndSave();
+      }
+    });
+  }
+
+  // to choose profile image and change the standard image of player 
+  editProfile(playerId: number){
+    const dialogRef = this.dialog.open(EditPlayerDialogComponent);
+     dialogRef.afterClosed().subscribe((change: string) => {
+      console.log('Recived change', change);
+      if(change){
+        if(change == 'DELETE'){
+           this.game.players.splice(playerId, 1);
+           this.game.player_profile.splice(playerId, 1);
+        } else {
+          this.game.player_profile[playerId] = change;
+        }
         this.updateGameAndSave();
       }
     });
@@ -154,15 +171,4 @@ export class GameComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  // to choose profile image and change the standard image of player 
-  editProfile(playerId: number){
-    const dialogRef = this.dialog.open(EditPlayerDialogComponent);
-     dialogRef.afterClosed().subscribe((change: string) => {
-      console.log('Recived change', change);
-       this.game.player_profile[playerId] = change;
-        this.updateGameAndSave();
-    });
-  }
-
 }

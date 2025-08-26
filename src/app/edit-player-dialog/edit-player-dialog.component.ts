@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogClose } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-edit-player-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogClose],
+  imports: [CommonModule, MatDialogModule, MatButtonModule],
   templateUrl: './edit-player-dialog.component.html',
   styleUrl: './edit-player-dialog.component.scss'
 })
@@ -16,4 +17,5 @@ export class EditPlayerDialogComponent {
     'smiley.png', 'sumo.png', 'stewardess.png', 'teacher.png'
   ];
 
+  constructor(public dialogRef: MatDialogRef<EditPlayerDialogComponent>){};
 }
