@@ -10,7 +10,7 @@
     <!-- <img *ngFor="let picture of allProfilePictures" src="assets/img/profiles/{{picture}}" alt="avatar_pictures_of_players"> -->
 
     <mat-dialog-actions>
-        <button mat-button class="close-btn" (click)="dialogRef.close()">Close</button>
-        <button mat-button class="delete-btn" [mat-dialog-close]="'DELETE'" cdkFocusInitial>Delete player</button>
+        <button mat-button class="close-btn" cdkFocusInitial (click)="dialogRef.close()">Close</button>
+        <button mat-button class="delete-btn" [mat-dialog-close]="'DELETE'">Delete player</button>
     </mat-dialog-actions>
 </div>

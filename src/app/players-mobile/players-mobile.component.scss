@@ -7,6 +7,8 @@
     border-bottom-right-radius: 50px;
     border-bottom-left-radius: 50px;
 
+    max-width: 100%;
+
     span {
         font-size: 16px;
         margin: 12px 0 12px 0;
@@ -24,4 +26,13 @@
 
 .ifPlayerActive {
     background-color: rgb(255, 162, 0);
+}
+
+@media (max-width: 1140px) {
+    .if-player-name-long {
+        max-width: 65px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 }

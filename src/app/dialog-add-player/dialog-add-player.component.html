@@ -2,13 +2,13 @@
 
 <mat-dialog-content>
   <p>Please, enter the name of a player</p>
-    <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="playerName">
-    </mat-form-field>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="playerName">
+  </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button (click)="noThanks()">No Thanks</button>
-  <button mat-button [disabled]="playerName.length == 0" [mat-dialog-close]="playerName" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="noThanks()">No, Thanks</button>
+  <button mat-button [disabled]="playerName.length == 0" [mat-dialog-close]="playerName" cdkFocusInitial>OK</button>
 </mat-dialog-actions>

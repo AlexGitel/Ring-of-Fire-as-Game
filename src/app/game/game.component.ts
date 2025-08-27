@@ -25,6 +25,7 @@ import { EditPlayerDialogComponent } from '../edit-player-dialog/edit-player-dia
 export class GameComponent implements OnInit, OnDestroy {
   game: GameObjects = new GameObjects();
   gameId!: string; // will be needed in updateGameAndSave().
+  gameOver = false;
 
   unsubscribe!: () => void;
 
@@ -71,8 +72,16 @@ export class GameComponent implements OnInit, OnDestroy {
 
   // function to chouse (pick) a new card (with flying to side)
   pickCard() {
+    if (this.game.players.length === 0 || this.game.currentPlayer < 0) {
+      this.snackBar.open('Please select a player first!', 'OK', {
+        duration: 2000
+      });
+      return;
+    }
+
     if (!this.game.pickCardAnimation) {
-      if (this.game.stack.length === 0) this.reshuffleCards(); // if stack empty - mix cards again
+      // if (this.game.stack.length === 0) this.reshuffleCards(); // if stack empty - mix cards again
+        if (this.game.stack.length === 0){this.gameOver = true};
 
       this.game.currentCard = this.game.stack.pop() ?? '';  // pick next card 
 
@@ -102,7 +111,7 @@ export class GameComponent implements OnInit, OnDestroy {
   // opens Dialog to add new player
   openDialog() {
       if (this.game.players.length >= 10) {
-      this.snackBar.open('Maximale Spieleranzahl (10) erreicht!', 'OK', {
+      this.snackBar.open('Max. number of players (10) reached!', 'OK', {
         duration: 3000
       });
       return;

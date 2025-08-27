@@ -9,6 +9,9 @@
     span {
         font-size: 28px;
         margin-left: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     img {

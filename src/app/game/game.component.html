@@ -14,8 +14,12 @@
     </app-players-mobile>
 </div>
 
+<div *ngIf="gameOver" class="game-over-overlay">
+    <img src="assets/img/game-over.jpg" alt="game-over-image">
+</div>
 
-<div class="play-field">
+
+<div *ngIf="!gameOver" class="play-field">
     <div class="card-stack">
 
         <!-- stack of cards, cover side -->
@@ -43,8 +47,8 @@
 
 </div>
 
-<app-tasks-for-players [card]="game.currentCard"></app-tasks-for-players>
+<app-tasks-for-players *ngIf="!gameOver" [card]="game.currentCard"></app-tasks-for-players>
 
-<button mat-fab class="btn-add" (click)="openDialog()">
+<button *ngIf="!gameOver" mat-fab class="btn-add" (click)="openDialog()">
     <mat-icon>add</mat-icon>
 </button>
