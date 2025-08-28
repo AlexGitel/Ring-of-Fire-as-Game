@@ -1,5 +1,5 @@
 <!--  Sidebar for added players, screen side right(desktop) -->
-<div class="players-wrapper-desktop">
+<div *ngIf="!gameOver" class="players-wrapper-desktop">
     <app-players (click)="editProfile(i)" *ngFor="let eachPlayer of game.players; let i = index" #desktopPlayer
         [name]="eachPlayer" [profileImage]="game.player_profile[i]" class="playersPosition hide-players-mobile"
         [ifPlayerActive]="i == game.currentPlayer">
@@ -7,7 +7,7 @@
 </div>
 
 <!--  Sidebar for added players, top side (mobile)  -->
-<div class="players-wrapper-mobile">
+<div *ngIf="!gameOver" class="players-wrapper-mobile">
     <app-players-mobile (click)="editProfile(i)" *ngFor="let eachPlayer of game.players; let i = index" #mobilePlayer
         [name]="eachPlayer" [profileImage]="game.player_profile[i]" class="playersPositionMobile hide-players-desktop"
         [ifPlayerActive]="i == game.currentPlayer">
@@ -15,7 +15,7 @@
 </div>
 
 <div *ngIf="gameOver" class="game-over-overlay">
-    <img src="assets/img/game-over.jpg" alt="game-over-image">
+    <img [class.fade-out]="fadeOut" src="assets/img/game-over.jpg" alt="game-over-image">
 </div>
 
 

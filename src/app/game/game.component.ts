@@ -26,6 +26,7 @@ export class GameComponent implements OnInit, OnDestroy {
   game: GameObjects = new GameObjects();
   gameId!: string; // will be needed in updateGameAndSave().
   gameOver = false;
+  fadeOut = false;  
 
   unsubscribe!: () => void;
 
@@ -72,33 +73,49 @@ export class GameComponent implements OnInit, OnDestroy {
 
   // function to chouse (pick) a new card (with flying to side)
   pickCard() {
-    if (this.game.players.length === 0 || this.game.currentPlayer < 0) {
-      this.snackBar.open('Please select a player first!', 'OK', {
-        duration: 2000
-      });
-      return;
-    }
+    if (!this.validatePlayer()) return;
 
     if (!this.game.pickCardAnimation) {
-      // if (this.game.stack.length === 0) this.reshuffleCards(); // if stack empty - mix cards again
-        if (this.game.stack.length === 0){this.gameOver = true};
+      if (this.game.stack.length === 0){ this.gameOver = true; 
+        setTimeout(() => { this.fadeOut = true; }, 1000);
+      };
 
-      this.game.currentCard = this.game.stack.pop() ?? '';  // pick next card 
-
-      this.game.pickCardAnimation = true; // start Animation
-
-      this.game.currentPlayer++;
-      this.game.currentPlayer %= this.game.players.length;
-
-      this.scrollToActivePlayerMobile();
-      this.scrollToActivePlayerDesktop();
-
-      setTimeout(() => {  // after Animation
-        this.ifCardPicked();
-        this.game.pickCardAnimation = false; // stop Animation
-        this.updateGameAndSave();        // Save status
-      }, 1100);
+      this.pickNextCard();
+      this.nextPlayer();
+      this.afterAnimation();
     }
+  }
+
+  // checks if player selected before starting the game
+  validatePlayer(): boolean {
+    if (this.game.players.length === 0 || this.game.currentPlayer < 0) {
+      this.snackBar.open('Please select a player first!', 'OK', { duration: 2000 });
+      return false;
+    }
+    return true;
+  }
+
+  // pick and show next card, card fly animation
+  pickNextCard() {
+    this.game.currentCard = this.game.stack.pop() ?? ''; // pick next card
+    this.game.pickCardAnimation = true; // start Animation
+  }
+
+  // next player, show next player in bar
+  nextPlayer() {
+    this.game.currentPlayer++;
+    this.game.currentPlayer %= this.game.players.length;
+    this.scrollToActivePlayerMobile();
+    this.scrollToActivePlayerDesktop();
+  }
+
+  // if card chosen, save the status of the game
+  afterAnimation() {
+    setTimeout(() => {
+      this.ifCardPicked();
+      this.game.pickCardAnimation = false;
+      this.updateGameAndSave();
+    }, 1100);
   }
 
   // if card is picked, it will be shown
@@ -179,5 +196,18 @@ export class GameComponent implements OnInit, OnDestroy {
         inline: 'nearest'
       });
     }
+  }
+
+  restartGame() {
+    // Reset game state
+    // this.reshuffleCards(); // alle Karten wieder rein
+    this.game.stack = [];
+    this.game.playedCards = [];
+    this.game.currentCard = '';
+    this.game.currentPlayer = 0;
+    this.gameOver = false;
+
+    // Save reset state to Firestore
+    this.updateGameAndSave();
   }
 }

@@ -135,5 +135,11 @@ app-players {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+        opacity: 1;
+        transition: opacity 3s ease-in-out;
+
+        &.fade-out {
+            opacity: 0;
+        }
     }
 }
