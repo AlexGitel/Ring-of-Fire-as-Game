@@ -26,7 +26,9 @@ export class GameComponent implements OnInit, OnDestroy {
   game: GameObjects = new GameObjects();
   gameId!: string; // will be needed in updateGameAndSave().
   gameOver = false;
-  fadeOut = false;  
+  fadeOut = false;
+  showImg = false;
+  startAgain = false;  
 
   unsubscribe!: () => void;
 
@@ -76,10 +78,7 @@ export class GameComponent implements OnInit, OnDestroy {
     if (!this.validatePlayer()) return;
 
     if (!this.game.pickCardAnimation) {
-      if (this.game.stack.length === 0){ this.gameOver = true; 
-        setTimeout(() => { this.fadeOut = true; }, 1000);
-      };
-
+      this.checkIfGameOver();
       this.pickNextCard();
       this.nextPlayer();
       this.afterAnimation();
@@ -93,6 +92,13 @@ export class GameComponent implements OnInit, OnDestroy {
       return false;
     }
     return true;
+  }
+
+  // checking if the game is over
+  checkIfGameOver(){
+    if (this.game.stack.length === 0){ this.gameOver = true; 
+        setTimeout(() => { this.fadeOut = true; this.startAgain = true; }, 1000);
+      };
   }
 
   // pick and show next card, card fly animation

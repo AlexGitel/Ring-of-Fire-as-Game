@@ -9,7 +9,7 @@ export class GameObjects {
 
 constructor() {
     // to go through all cards and shuffle them
-    for (let i = 1; i < 14; i++) {
+    for (let i = 1; i < 2; i++) {
         this.stack.push('spades_' + i);
         this.stack.push('hearts_' + i);
         this.stack.push('diamonds_' + i);
