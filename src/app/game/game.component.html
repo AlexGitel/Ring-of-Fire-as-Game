@@ -16,7 +16,7 @@
 
 <div *ngIf="gameOver" class="game-over-overlay">
     <img [class.fade-out]="fadeOut" src="assets/img/game.png" alt="game-over-image">
-    <p [class.startAgain]="startAgain">Start again</p>
+    <p [class.startAgain]="startAgain" (click)="restartGame()">Start again?</p>
 </div>
 
 

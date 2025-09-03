@@ -205,15 +205,20 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   restartGame() {
-    // Reset game state
-    // this.reshuffleCards(); // alle Karten wieder rein
-    this.game.stack = [];
-    this.game.playedCards = [];
-    this.game.currentCard = '';
+    // take the same players
+    const players = [...this.game.players];
+    const profiles = [...this.game.player_profile];
+      // players and profiles as copy
+    this.game = new GameObjects();
+    this.game.players = players;
+    this.game.player_profile = profiles;
     this.game.currentPlayer = 0;
-    this.gameOver = false;
-
-    // Save reset state to Firestore
+      // reset status
+    this.gameOver = this.fadeOut = this.startAgain = this.showImg = false;
+      // save in Firestore
     this.updateGameAndSave();
+      // scroll to the first player
+    this.scrollToActivePlayerMobile();
+    this.scrollToActivePlayerDesktop();
   }
 }
